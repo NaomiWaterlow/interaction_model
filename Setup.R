@@ -16,17 +16,17 @@ packages <- c(
   ,"bbmle"
   , "coda"
   ,"tmvtnorm"
-  ,"fitR"
   #,"GGally"
 )
 
 #install an individual package
 # install.packages("fitR", lib = storage)
 
-# #Install packages (only needed once!)
+#Install packages (only needed once!)
 # for (i in packages){
 #   install.packages("Rcpp", lib = storage)
 # }
+
 
 #load the required packages
 for (i in packages){
