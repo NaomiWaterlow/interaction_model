@@ -1,6 +1,11 @@
 
 # ########### SETUP & PARAMETERSS ########
 
+# Choose which simulation to create
+simulation_ID <- 1 # edit manually
+
+simulation_overview <- read.csv("~/Documents/GitHub/interaction_model/Data/Multiple_sims_nov.csv")
+set.seed(simulation_overview[simulation_ID, "Seed"])
 #Define age groups wanted, Need to include at least 0,2,5
 Age_groups <- c(0, 2, 5, 16, 65)
 
@@ -12,7 +17,7 @@ source("setup.R")
 setwd("~/Documents/GitHub/interaction_model")
 source("Mixing_UK_Ages.R")
 # Source the model
-setwd("/Users/lsh1402815/Documents/GitHub/VietnamModel/Model")
+setwd("~/Documents/GitHub/interaction_model")
 sourceCpp("Flex_age_model_trickle.cpp")
 
 #Age group specific variables
@@ -26,10 +31,10 @@ times <- seq(from = 1, to = 365, by = 1)
 Parameters <- list(
   bR = log(0.043),
   bI = log(0.063),
-  l_sig = 0.5,
+  l_sig = simulation_overview[simulation_ID, "Sigma"],
   gammaR =  0.1111,
   gammaI = 0.2632,
-  l_rho = 0.1,
+  l_rho = simulation_overview[simulation_ID, "Rho"],
   Rdetect2 = 0.004,
   Rdetect5 = 0.001,
   Idetect = 0.002,
@@ -122,4 +127,8 @@ out_weekly[, Hos_INF_1 := rbinom(dim(out_weekly)[1],round(INF_incidence_2),
 #Save the data
 out_weekly[,(2:(15 * length(Age_groups) + 2)) := NULL]
 simulation.data <- out_weekly
-write.table((simulation.data), file = "Simulation_1", sep = ",")
+write.table((simulation.data), file = paste0("~/Documents/GitHub/interaction_model/Data/Simulation",
+                                             simulation_overview[simulation_ID,"Run"],
+                                             "_",
+                                             simulation_overview[simulation_ID,"Seed"]),
+            sep = ",")
