@@ -3,19 +3,20 @@
 # set up betas for calculating R0 ratio for priors
 bI_calc_R0 <-1
 bR_calc_R0 <- 1
+Contactmatrix <-Contact_structure
 
 # Influenza transmission matrix
 ITransmission <- matrix(nrow = length(Pop_sizes), ncol = length(Pop_sizes))
 
 for (i in 1:length(Pop_sizes)){
   for (j in 1:length(Pop_sizes)) {
-    ITransmission[i, j] <- length(Pop_sizes) * Contactmatrix[i, j]*Pop_sizes[j]
+    ITransmission[i, j] <-  bI_calc_R0* Contactmatrix[i, j]*Pop_sizes[j]
   }
 }
 
 #Transition matrix
 ITransition <- matrix(0, nrow = length(Pop_sizes), ncol = length(Pop_sizes) )
-diag(ITransition) <- gammaI
+diag(ITransition) <- Parameters$gammaI
 
 #Inverse 
 ITransition_inverse <- ginv(ITransition)
@@ -24,7 +25,6 @@ ITransition_inverse
 #NGM
 INGM <- ITransmission %*% ITransition_inverse
 IEigen <- unlist((eigen(INGM)[1]))
-R0_INF <- max(IEigen)
 
 # ratio
 R0ratI <-  max(IEigen)
@@ -42,7 +42,7 @@ for (i in 1:length(Pop_sizes)){
 
 #Transition matrix
 RTransition <- matrix(0,nrow = length(Pop_sizes), ncol = length(Pop_sizes) )
-diag(RTransition) <- gammaR
+diag(RTransition) <- Parameters$gammaR
 
 #Inverse 
 RTransition_inverse <- ginv(RTransition)

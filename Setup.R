@@ -21,6 +21,7 @@ packages <- c(
 
 #install an individual package
 # install.packages("fitR", lib = storage)
+#library(countrycode, lib.loc = storage)
 
 #Install packages (only needed once!)
 # for (i in packages){

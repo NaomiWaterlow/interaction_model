@@ -11,7 +11,7 @@ Age_groups <- c(0, 2, 5, 16, 65)
 
 # Load the packages
 setwd("~/Documents/GitHub/interaction_model")
-source("setup.R")
+source("Setup.R")
 
 #Make mixing matrix using UK Polymod contact matrix
 setwd("~/Documents/GitHub/interaction_model")
